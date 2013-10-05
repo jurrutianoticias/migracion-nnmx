@@ -1,0 +1,19 @@
+name = "Migracion nnmx"
+description = "Migration of data from nnmx site build in drupal 6"
+package = "nnmx"
+core = 7.x
+
+dependencies[] = taxonomy
+dependencies[] = image
+dependencies[] = comment
+dependencies[] = migrate
+dependencies[] = list
+dependencies[] = number
+
+files[] = migracion_nnmx.module
+files[] = migracion_fileTable.inc
+files[] = migracion_usuarios.inc
+files[] = migracion_edicionTerm.inc
+files[] = migracion_blogTerm.inc
+files[] = migracion_ubicacionTerm.inc
+files[] = migracion_blogNode.inc

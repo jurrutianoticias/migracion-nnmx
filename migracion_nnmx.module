@@ -1,0 +1,101 @@
+<?php
+
+// define the source database
+define("SOURCE_DATABASE", 'old_drupal');
+define("NNMX_EDICION_VID", 40);
+define("NNMX_BLOG_VID", 36);
+define("NNMX_UBICACION_VID", 41);
+define('SOURCE_URL', 'http://www.noticiasnet.mx/portal/');
+
+/*
+ * You must implement hook_migrate_api(), setting the API level to 2, for
+ * your migration classes to be recognized by the Migrate module.
+ */
+function migracion_nnmx_migrate_api() {
+  $api = array(
+    'api' => 2,
+  );
+  return $api;
+}
+
+
+
+/**
+*Auxiliar Function
+**/
+
+
+
+/**
+ * Translate between D6 input format id and D7 text format name.
+ */
+function nnmx_migration_get_text_format($format) {
+  $output = '';
+
+  switch ($format) {
+    case 1:
+      $output = 'filtered_html';
+      break;
+    case 2:
+      $output = 'full_html';
+      break;
+    case 4:
+      $output = 'reportero';
+      break;
+    case 6:
+      $output = 'php_code';
+      break;
+    default:
+      $output = 'plain_text';
+  }
+
+  return $output;
+}
+
+
+/**
+ * Retrieve the set of term associated with a node from the migration database.
+ */
+function nnmx_migration_get_terms($vid, $tvid) {
+  $query = db_select(SOURCE_DATABASE . '.term_node', 'tn');
+  $query->join(SOURCE_DATABASE . '.term_data', 'td', 'tn.tid = td.tid');
+  $query->addField('td', 'name');
+  $query->condition('tn.vid', $vid, '=');
+  $query->condition('td.vid', $tvid, '=');
+  $query->orderBy('tn.tid', 'ASC');
+  $result = $query->execute()->fetchCol();
+
+  return is_array($result) && !empty($result) ? implode(',', $result) : NULL;
+}
+
+
+/**
+ * Retrieve the url alias associated with the node from the migration database.
+ */
+function nnmx_migration_get_url_alias($nid) {
+  $result = db_select(SOURCE_DATABASE . '.url_alias', 'ua')
+    ->fields('ua', array('dst'))
+    ->condition('ua.src', 'node/' . $nid, '=')
+    ->execute()
+    ->fetchObject();
+
+  return is_object($result) && !empty($result->dst) ? $result->dst : NULL;
+}
+
+/**
+*Retrive the link of youtube field
+**/
+function nnmx_migration_get_video_youtube($vid) {
+
+  $query = db_select(SOURCE_DATABASE . '.content_field_video_youtube', 'yt')
+  ->fields('yt', array('field_video_youtube_value'))
+  ->condition('yt.vid', $vid, '=');
+  $result = $query->execute();
+
+  foreach($result as $row) {
+    $output[] = $row->field_video_youtube_value;
+  }
+  return $output;
+}
+
+
