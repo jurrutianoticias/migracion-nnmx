@@ -98,4 +98,20 @@ function nnmx_migration_get_video_youtube($vid) {
   return $output;
 }
 
+/**
+*Retrive the text of textfields
+**/
+function nnmx_migration_get_textfield($vid, $table, $field) {
+
+$field_value = $field . '_value';
+  $query = db_select(SOURCE_DATABASE . '.' . $table, 'yt')
+  ->fields('yt', array($field_value))
+  ->condition('yt.vid', $vid, '=');
+  $result = $query->execute();
+
+  foreach($result as $row) {
+    $output[] = $row->$field_value;
+  }
+  return $output;
+}
 

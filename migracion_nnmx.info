@@ -17,3 +17,4 @@ files[] = migracion_edicionTerm.inc
 files[] = migracion_blogTerm.inc
 files[] = migracion_ubicacionTerm.inc
 files[] = migracion_blogNode.inc
+files[] = migracion_notaNode.inc
