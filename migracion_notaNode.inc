@@ -36,7 +36,7 @@ class nnmxNodeNotaMigration extends Migration {
     $query->addField('nr', 'format');
     $query->join(SOURCE_DATABASE . '.users', 'u', 'n.uid = u.uid');
     $query->addField('u', 'name');
-    $query->orderBy('n.nid', 'DESC');
+    $query->orderBy('n.nid', 'ASC');
 
 
     //source fields
@@ -153,4 +153,4 @@ class nnmxNodeNotaMigration extends Migration {
     return TRUE;
   }
 
-}//end of class
+}//end of class fin
