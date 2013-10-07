@@ -123,7 +123,7 @@ class nnmxNodeNotaMigration extends Migration {
     $query = db_select(SOURCE_DATABASE . '.content_field_foto', 'a')
       ->fields('a', array('field_foto_fid','field_foto_data'))
       ->condition('a.vid', $current_row->vid, '=')
-      ->orderBy('a.field_fotoblog_fid', 'ASC');
+      ->orderBy('a.field_foto_fid', 'ASC');
     $result = $query->execute();
       $fids = array();
       $alts = array();
