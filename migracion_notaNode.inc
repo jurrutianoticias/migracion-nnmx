@@ -91,8 +91,6 @@ class nnmxNodeNotaMigration extends Migration {
     $this->addFieldMapping('field_nota_foto:title', 'content_field_foto_title');
     $this->addFieldMapping('field_nota_foto:file_class')
      ->defaultValue('MigrateFileFid');
-    $this->addFieldMapping('field_nota_foto:preserve_files')
-         ->defaultValue(TRUE);
 
     // Unmapped source fields
     $this->addUnmigratedSources(array('vid', 'type', 'language', 'moderate', 'tnid', 'translate', 'teaser', 'format', 'name'));
