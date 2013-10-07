@@ -83,7 +83,7 @@ class nnmxNodeNotaMigration extends Migration {
     $this->addFieldMapping('field_balazo', 'content_field_balazo');
     $this->addFieldMapping('field_autores', 'content_field_autor');
     $this->addFieldMapping('field_numeralia', 'content_field_numeralia');
-    $this->addFieldMapping('field_rutal_al_especial', 'content_field_rura_al_especial');
+    $this->addFieldMapping('field_ruta_al_especial', 'content_field_ruta_especial');
 
 
     $this->addFieldMapping('field_nota_foto', 'content_field_foto');
@@ -114,7 +114,7 @@ class nnmxNodeNotaMigration extends Migration {
     //set customs text fields
     $current_row->content_field_balazo = nnmx_migration_get_textfield($current_row->vid, 'content_type_nota', 'field_balazo_value');
     $current_row->content_field_numeralia = nnmx_migration_get_textfield($current_row->vid, 'content_type_nota', 'field_numeralia_value');
-    $current_row->content_field_rura_al_especial = nnmx_migration_get_textfield($current_row->vid, 'content_type_nota', 'field_ruta_especial_value');
+    $current_row->content_field_ruta_especial = nnmx_migration_get_textfield($current_row->vid, 'content_type_nota', 'field_ruta_especial_value');
 
     $current_row->content_field_autor = nnmx_migration_get_textfield($current_row->vid, 'content_field_autor', 'field_autor_value');
 
