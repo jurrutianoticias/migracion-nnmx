@@ -36,7 +36,7 @@ class nnmxNodeNotaMigration extends Migration {
     $query->addField('nr', 'format');
     $query->join(SOURCE_DATABASE . '.users', 'u', 'n.uid = u.uid');
     $query->addField('u', 'name');
-    $query->orderBy('n.nid', 'ASC');
+    $query->orderBy('n.nid', 'DESC');
 
 
     //source fields
@@ -91,6 +91,8 @@ class nnmxNodeNotaMigration extends Migration {
     $this->addFieldMapping('field_nota_foto:title', 'content_field_foto_title');
     $this->addFieldMapping('field_nota_foto:file_class')
      ->defaultValue('MigrateFileFid');
+    $this->addFieldMapping('field_nota_foto:preserve_files')
+         ->defaultValue(TRUE);
 
     // Unmapped source fields
     $this->addUnmigratedSources(array('vid', 'type', 'language', 'moderate', 'tnid', 'translate', 'teaser', 'format', 'name'));
