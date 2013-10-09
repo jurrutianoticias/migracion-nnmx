@@ -114,3 +114,18 @@ function nnmx_migration_get_textfield($vid, $table, $field) {
   return $output;
 }
 
+/**
+*Retrive the text of ruta al flipping book
+**/
+function nnmx_migration_get_rutafb($vid, $table, $field) {
+
+  $query = db_select(SOURCE_DATABASE . '.' . $table, 'yt')
+  ->fields('yt', array($field))
+  ->condition('yt.vid', $vid, '=');
+  $result = $query->execute();
+  $search = array('http://noticias-oax.com.mx/flipping_book','../../../../../../../flipping_book','/flipping_book');
+  foreach($result as $row) {
+    $output[] = str_replace($search, '', $row->$field);
+  }
+  return $output;
+}
