@@ -19,3 +19,6 @@ files[] = migracion_ubicacionTerm.inc
 files[] = migracion_blogNode.inc
 files[] = migracion_notaNode.inc
 files[] = migracion_edDigitalNode.inc
+files[] = migracion_videoNode.inc
+files[] = migracion_youtubeDataTable.inc
+files[] = migracion_youtubeRevisionTable.inc

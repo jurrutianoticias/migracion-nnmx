@@ -93,7 +93,7 @@ function nnmx_migration_get_video_youtube($vid) {
   $result = $query->execute();
 
   foreach($result as $row) {
-    $output[] = $row->field_video_youtube_value;
+    $output[] = 'http://www.youtube.com/watch?v=' . $row->field_video_youtube_value;
   }
   return $output;
 }

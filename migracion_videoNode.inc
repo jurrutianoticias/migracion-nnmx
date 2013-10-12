@@ -1,12 +1,12 @@
 <?php
 
-class nnmxNodeBlogMigration extends Migration {
+class nnmxNodeVideoMigration extends Migration {
   public function __construct() {
     parent::__construct();
     // Human-friendly description of your migration process. Be as detailed as you like.
-    $this->description = t('Migrate xdeb pages nodes.');
+    $this->description = t('Migrate nnmx videos.');
 
-    $this->dependencies = array('nnmxTermBlog', 'nnmxUser', 'nnmxFileTable');
+    $this->dependencies = array('nnmxTermEdicion', 'nnmxTermUbicacion', 'nnmxUser', 'nnmxFileTable');
 
 
     // Create a map object for tracking the relationships between source rows
@@ -30,7 +30,7 @@ class nnmxNodeBlogMigration extends Migration {
     // set up a query for this data.
     $query = db_select(SOURCE_DATABASE . '.node', 'n')
       ->fields('n', array('nid', 'vid', 'type', 'language', 'title', 'uid', 'status', 'created', 'changed', 'comment', 'promote', 'moderate', 'sticky', 'tnid', 'translate'))
-      ->condition('n.type', 'blog', '=');
+      ->condition('n.type', 'video', '=');
     $query->join(SOURCE_DATABASE . '.node_revisions', 'nr', 'n.vid = nr.vid');
     $query->addField('nr', 'body');
     $query->addField('nr', 'teaser');
@@ -46,19 +46,16 @@ class nnmxNodeBlogMigration extends Migration {
     $source_fields = array(
       'nid' => t('The node ID of the page'),
       'url_alias' => t('The url alias of the node'),
-      'category' => t('The category for the node'),
-      /*'content_field_video_youtube' => t('youtube video field'),
-      'content_field_youtube' => t('youtube field'),*/
-      'content_field_fotoblog' => t('blog image'),
-      'content_field_fotoblog_alt' => t('blog image alt'),
-      'content_field_fotoblog_title' => t('blog image title'),
+      'edicion' => t('The category for the node'),
+      'ubicacion' => t('The category for the node'),
+      'content_field_autor' => t('author of video'),
     );
 
     // Create a MigrateSource object, which manages retrieving the input data.
     $this->source = new MigrateSourceSQL($query, $source_fields);
 
     // Set up our destination - node in this case.
-    $this->destination = new MigrateDestinationNode('blog');
+    $this->destination = new MigrateDestinationNode('video');
 
 // Assign mappings TO destination fields FROM source fields.
     $this->addFieldMapping('is_new')->defaultValue(TRUE);
@@ -75,17 +72,11 @@ class nnmxNodeBlogMigration extends Migration {
     $this->addFieldMapping('comment', 'comment');
     $this->addFieldMapping('path', 'url_alias');
     $this->addFieldMapping('language')->defaultValue(LANGUAGE_NONE);
-    $this->addFieldMapping('field_blog_category', 'category')->separator(',');
+    $this->addFieldMapping('field_edicion', 'edicion')->separator(',');
+    $this->addFieldMapping('field_ubicacion', 'ubicacion')->separator(',');
     $body_arguments = MigrateTextFieldHandler::arguments(array('source_field' => 'teaser'), array('source_field' => 'format'));
     $this->addFieldMapping('body', 'body')->arguments($body_arguments);
-    /*$this->addFieldMapping('field_video_youtube', 'content_field_video_youtube');
-    $this->addFieldMapping('field_youtube', 'content_field_youtube');*/
-
-    $this->addFieldMapping('field_blog_foto', 'content_field_fotoblog');
-    $this->addFieldMapping('field_blog_foto:alt', 'content_field_fotoblog_alt');
-    $this->addFieldMapping('field_blog_foto:title', 'content_field_fotoblog_title');
-    $this->addFieldMapping('field_blog_foto:file_class')
-     ->defaultValue('MigrateFileFid');
+    $this->addFieldMapping('field_autores', 'content_field_autor');
 
   // Unmapped source fields
     $this->addUnmigratedSources(array('vid', 'type', 'language', 'moderate', 'tnid', 'translate', 'teaser', 'format', 'name'));
@@ -99,43 +90,13 @@ class nnmxNodeBlogMigration extends Migration {
     $current_row->format = nnmx_migration_get_text_format($current_row->format);
 
     // Set the terms for the node.
-    $current_row->category = nnmx_migration_get_terms($current_row->vid, NNMX_BLOG_VID);
+    $current_row->edicion = nnmx_migration_get_terms($current_row->vid, NNMX_EDICION_VID);
+    $current_row->ubicacion = nnmx_migration_get_terms($current_row->vid, NNMX_UBICACION_VID);
 
     // Set the url alias for the node.
     $current_row->url_alias = nnmx_migration_get_url_alias($current_row->nid);
 
-    //set youtube video fiel
-   /* $current_row->content_field_video_youtube = nnmx_migration_get_video_youtube($current_row->vid);
-
-    $current_row->content_field_youtube = nnmx_migration_get_video_youtube($current_row->vid);*/
-
-    //get the fid of the image's of the blog
-    // Set file data for the attachment file fields.
-    $query = db_select(SOURCE_DATABASE . '.content_field_fotoblog', 'a')
-      ->fields('a', array('field_fotoblog_fid','field_fotoblog_data'))
-      ->condition('a.vid', $current_row->vid, '=')
-      ->orderBy('a.field_fotoblog_fid', 'ASC');
-    $result = $query->execute();
-      $fids = array();
-      $alts = array();
-      $titles = array();
-
-    foreach ($result as $row) {
-      $field_data = unserialize($row->field_fotoblog_data);
-      $field = array(
-        'fid' => $row->field_fotoblog_fid,
-        'alt' => $field_data['alt'],
-        'title' => $field_data['title'],
-      );
-      array_push($fids, $field['fid']);
-      array_push($alts, $field['alt']);
-      array_push($titles, $field['title']);
-    }
-    $current_row->content_field_fotoblog = $fids;
-    $current_row->content_field_fotoblog_alt = $alts;
-    $current_row->content_field_fotoblog_title = $titles;
-
-    //end get image's of blog
+    $current_row->content_field_autor = nnmx_migration_get_textfield($current_row->vid, 'content_field_autor', 'field_autor_value');
 
 
     // We could also have used this function to decide to skip a row, in cases
