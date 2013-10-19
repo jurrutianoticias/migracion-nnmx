@@ -22,3 +22,4 @@ files[] = migracion_edDigitalNode.inc
 files[] = migracion_videoNode.inc
 files[] = migracion_youtubeDataTable.inc
 files[] = migracion_youtubeRevisionTable.inc
+files[] = migracion_node_counterTable.inc
