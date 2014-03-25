@@ -85,24 +85,24 @@ class nnmxUserMigration extends Migration {
       if ($row->rid == 13) {
         $roles['3'] = '3';
       }
-      // mesa (rid 11) need role id 7
+      // mesa (rid 11) need role id 8
       if ($row->rid ==11) {
-        $roles['7'] = '7';
+        $roles['8'] = '8';
       }
       // oax (rid 16) need role id 6
       if ($row->rid == 16) {
         $roles['6'] = '6';
       }
-      // sjbt (rid 17) need role id 5
+      // sjbt (rid 17) need role id 7
       if ($row->rid == 17) {
-        $roles['8'] = '8';
+        $roles['7'] = '7';
       }
-      // cc (rid 18) need role id 5
+      // cc (rid 18) need role id 9
       if ($row->rid == 18) {
         $roles['9'] = '9';
       }
       // Collaboraters are role id 5 in both old and new dbs
-      $roles[$row->rid] = $row->rid;
+      //$roles[$row->rid] = $row->rid;
     }
     $current_row->roles = $roles;
     return TRUE;

@@ -17,7 +17,7 @@ class nnmxNodeCounterTableMigration extends Migration {
               'description' => 'nodo id',
             )
           ),
-        MigrateDestinationTable::getKeySchema($table_name)
+        MigrateDestinationTable::getKeySchema('node_counter')
       );
 
 //query
